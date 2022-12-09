@@ -6,6 +6,7 @@ import com.movieland.dto.MovieRequestDto;
 import com.movieland.entity.CurrencyType;
 import com.movieland.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class MovieController {
         return movieService.findAll(param);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     MovieDto getById(
             @PathVariable int id,
@@ -49,11 +51,13 @@ public class MovieController {
         return movieService.findByGenre(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     MovieDto add(@RequestBody MovieRequestDto movie) {
         return movieService.add(movie);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     MovieDto update(@PathVariable int id, @RequestBody MovieRequestDto movie) {
         return movieService.update(id, movie);
