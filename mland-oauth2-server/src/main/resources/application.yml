@@ -1,0 +1,10 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: mland-oauth2-server
+  config:
+#    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:instead
+
+

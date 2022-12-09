@@ -1,0 +1,18 @@
+server:
+  port: ${PORT:8888}
+
+spring:
+  application:
+    name: mland-config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: true
+          basedir: ${CONFIG_BASE_DIR:git_config}
+          username: ${GIT_USER}
+          password: ${GIT_TOKEN}
+          default-label: main
+          uri: ${GIT_URI}
+
