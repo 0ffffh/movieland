@@ -1,0 +1,10 @@
+{
+  "nameRu": "ТЕСТ",
+  "nameNative": "TEST",
+  "yearOfRelease": "1999",
+  "description": "ТЕСТ",
+  "price": 111.11,
+  "picturePath": "https://http.com",
+  "countries": [1,2],
+  "genres": [1,2,3]
+}

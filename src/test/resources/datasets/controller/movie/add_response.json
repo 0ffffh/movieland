@@ -1,0 +1,33 @@
+{
+  "nameNative": "TEST",
+  "nameRu": "ТЕСТ",
+  "rating": 0.0,
+  "price": 111.11,
+  "picturePath": "https://http.com",
+  "yearOfRelease": "1999",
+  "description": "ТЕСТ",
+  "countries": [
+    {
+      "id": 1,
+      "name": "США"
+    },
+    {
+      "id": 2,
+      "name": "Франция"
+    }
+  ],
+  "genres": [
+    {
+      "id": 1,
+      "name": "драма"
+    },
+    {
+      "id": 2,
+      "name": "криминал"
+    },
+    {
+      "id": 3,
+      "name": "фэнтези"
+    }
+  ]
+}
