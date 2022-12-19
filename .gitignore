@@ -7,7 +7,8 @@ target/
 mvnw
 mvnw.cmd
 logs
-application-dev.yml
+git_config
+application-localdev.yml
 ### STS ###
 .apt_generated
 .classpath
