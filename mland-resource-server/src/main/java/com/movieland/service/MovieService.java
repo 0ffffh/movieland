@@ -3,6 +3,7 @@ package com.movieland.service;
 import com.movieland.dto.MovieDto;
 import com.movieland.dto.MovieRequestDto;
 import com.movieland.entity.CurrencyType;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,5 @@ public interface MovieService {
 
     MovieDto update(int id, MovieRequestDto movie);
 
+    List<MovieDto> findByTitle(String title, Pageable pageable);
 }

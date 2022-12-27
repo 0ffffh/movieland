@@ -89,7 +89,6 @@ public class MovieEnrichAsyncService {
                 .handle((result, e) -> {
                     if (e != null) {
                         log.info("Calculate currency error: {}", e.getMessage());
-                        return result;
                     }
                     return result;
                 });

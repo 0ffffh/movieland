@@ -18,11 +18,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(auth -> auth
                         .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .pathMatchers("/eureka/**").permitAll()
                         .anyExchange().authenticated())
                 .oauth2Login()
                 .and()
-                .oauth2ResourceServer()
-                .jwt();
+                .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt);
         return http.build();
     }
 }

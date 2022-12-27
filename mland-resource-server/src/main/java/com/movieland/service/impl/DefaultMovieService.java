@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +94,14 @@ public class DefaultMovieService implements MovieService {
         movieMapper.update(movie, movieDto);
         log.info("Movie {} updated", id);
         return movieMapper.toMovieDto(movieRepository.save(movie));
+    }
+
+    @Override
+    public List<MovieDto> findByTitle(String title, Pageable pageable) {
+        if(title ==null || title.isBlank()){
+            return movieMapper.moviesToShortMovieDtoList(movieRepository.findAll());
+        }
+        return movieMapper.moviesToShortMovieDtoList(movieRepository.findByTitle(title, pageable));
     }
 
     private void enrich(Movie movie, MovieRequestDto movieDto) {
