@@ -21,6 +21,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
         MDC.put("user", principal == null ? "guest" : principal.getName());
         MDC.put("path", request.getRequestURI());
         MDC.put("method", request.getMethod());
+//        MDC.put("logging.pattern.level", "%5p [${spring.zipkin.service.name:" + "${spring.application.name:}},%X{traceId:-},%X{spanId:-}]");
         return true;
     }
 
