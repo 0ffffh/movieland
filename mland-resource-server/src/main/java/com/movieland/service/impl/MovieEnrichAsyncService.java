@@ -86,14 +86,15 @@ public class MovieEnrichAsyncService {
     public CompletableFuture<Void> calculateCurrency(MovieDto movieDto, CurrencyType currencyType) {
         log.info("Calculate currency type {}", currencyType.getCurrency());
 
-        return CompletableFuture.runAsync(() -> currencyService.convert(movieDto, currencyType), executor)
-                .orTimeout(TIMEOUT, TimeUnit.SECONDS)
-                .handle((result, e) -> {
-                    if (e != null) {
-                        log.error("Calculate currency error: {}", e.getMessage());
-                    }
-                    return result;
-                });
+        return currencyService.convert(movieDto, currencyType);
+//        return CompletableFuture.runAsync(() -> currencyService.convert(movieDto, currencyType), executor)
+//                .orTimeout(TIMEOUT, TimeUnit.SECONDS)
+//                .handle((result, e) -> {
+//                    if (e != null) {
+//                        log.error("Calculate currency error: {}", e.getMessage());
+//                    }
+//                    return result;
+//                });
     }
 
 }
