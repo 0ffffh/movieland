@@ -6,6 +6,7 @@ import com.movieland.entity.CurrencyType;
 import com.movieland.service.CurrencyService;
 import com.movieland.service.ExternalCurrencyService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class DefaultCurrencyService implements CurrencyService {
     @Override
     @CircuitBreaker(name = "currencyService", fallbackMethod = "getFallBack")
     @TimeLimiter(name = "currencyService")
+    @Retry(name = "currencyService")
     public CompletableFuture<Void> convert(MovieDto movieDto, CurrencyType currencyType) {
 //    public void convert(MovieDto movieDto, CurrencyType currencyType) {
 //        log.info("Currency type {}", currencyType.getCurrency());
