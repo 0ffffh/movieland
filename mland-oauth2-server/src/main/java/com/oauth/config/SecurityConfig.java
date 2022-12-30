@@ -29,7 +29,6 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private final JdbcTemplate jdbcTemplate;
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -48,7 +47,6 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        //        return new JdbcRegisteredClientRepository(jdbcTemplate);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("gateway")

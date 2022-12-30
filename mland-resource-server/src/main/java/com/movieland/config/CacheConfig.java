@@ -18,7 +18,6 @@ import javax.management.timer.Timer;
 public class CacheConfig {
     private static final String GENRE_CACHE = "genres";
     private static final String COUNTRY_CACHE = "countries";
-    private static final String CURRENCY_CACHE = "currency";
     private static final String MOVIE_CACHE = "movies";
     private static final long FOUR_HOURS = Timer.ONE_HOUR * 4;
 
@@ -40,9 +39,4 @@ public class CacheConfig {
         log.info("Reset countries cache");
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
-    @CacheEvict(value = CURRENCY_CACHE, allEntries = true)
-    public void enrichCurrencyCache() {
-        log.info("Reset currency cache");
-    }
 }

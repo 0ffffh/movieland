@@ -1,11 +1,14 @@
 package com.movieland.service;
 
 import com.movieland.entity.Currency;
+import com.movieland.entity.CurrencyType;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
+@FeignClient(name = "mland-currency-service")
 public interface ExternalCurrencyService {
-
-    List<Currency> getCurrencyRate();
+    @PostMapping("/currency")
+    Currency getCurrency(@RequestBody CurrencyType currencyType);
 
 }

@@ -21,6 +21,7 @@
         <module>mland-api-gateway</module>
         <module>mland-discovery-server</module>
         <module>mland-config-server</module>
+        <module>mland-currency-service</module>
     </modules>
 
 </project>

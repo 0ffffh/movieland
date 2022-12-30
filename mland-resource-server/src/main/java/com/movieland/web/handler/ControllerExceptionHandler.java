@@ -1,6 +1,5 @@
 package com.movieland.web.handler;
 
-import com.movieland.exception.CurrencyServiceException;
 import com.movieland.exception.MovieEnrichAsyncServiceException;
 import com.movieland.exception.MovieNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,11 +17,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
 
-    @ExceptionHandler(CurrencyServiceException.class)
-    public ResponseEntity<ErrorMessage> currencyServiceException(CurrencyServiceException exception) {
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-    }
+//    @ExceptionHandler(CurrencyServiceException.class)
+//    public ResponseEntity<ErrorMessage> currencyServiceException(CurrencyServiceException exception) {
+//        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+//    }
 
     @ExceptionHandler(MovieEnrichAsyncServiceException.class)
     public ResponseEntity<ErrorMessage> movieEnrichServiceException(MovieEnrichAsyncServiceException exception) {
