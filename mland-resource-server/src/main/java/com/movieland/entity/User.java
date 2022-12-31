@@ -25,7 +25,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-//public class User implements UserDetails {
 public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
@@ -39,44 +38,7 @@ public class User  {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-//    @Column(name = "password", nullable = false)
-//    private String password;
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "users_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    private Set<Role> roles = new HashSet<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<>();
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return roles;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return this.nickname;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
+
 }

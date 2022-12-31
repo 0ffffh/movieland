@@ -6,6 +6,7 @@ import com.movieland.entity.Country;
 import com.movieland.entity.CurrencyType;
 import com.movieland.entity.Genre;
 import com.movieland.entity.Movie;
+import com.movieland.event.MovieEvent;
 import com.movieland.exception.MovieNotFoundException;
 import com.movieland.mapper.MovieMapper;
 import com.movieland.repository.MovieRepository;
@@ -18,6 +19,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class DefaultMovieService implements MovieService {
 
     private final MovieEnrichAsyncService enrichService;
 
+    private final KafkaTemplate<String, MovieEvent> kafkaTemplate;
     private final MovieMapper movieMapper;
 
     @Override
@@ -80,6 +83,7 @@ public class DefaultMovieService implements MovieService {
         Movie savedMovie = movieRepository.save(movie);
         enrich(savedMovie, movieDto);
         log.info("Added movie id = {}", savedMovie.getId());
+        kafkaTemplate.send("movieNotification", new MovieEvent(savedMovie.toString()));
         return movieMapper.toMovieDto(savedMovie);
     }
 

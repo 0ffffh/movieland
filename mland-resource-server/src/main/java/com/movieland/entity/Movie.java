@@ -2,6 +2,7 @@ package com.movieland.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Table(name = "movie")
 @Getter
 @Setter
+@ToString
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_seq_generator")
