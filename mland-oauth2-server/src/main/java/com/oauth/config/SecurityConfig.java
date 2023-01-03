@@ -29,7 +29,6 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {

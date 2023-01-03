@@ -1,6 +1,29 @@
 ---
 version: '3'
 services:
+  postgresdb:
+    image: postgres
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mland
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgresdb
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
@@ -12,8 +35,6 @@ services:
     image: confluentinc/cp-kafka:7.3.0
     container_name: broker
     ports:
-      # To learn about configuring Kafka for access across networks see
-      # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
       - "9092:9092"
     depends_on:
       - zookeeper
@@ -25,3 +46,83 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
+
+  mland-config-server:
+    image: mland-config-server
+    container_name: mland-config-server
+    depends_on:
+      - postgresdb
+      - broker
+      - zipkin
+
+
+  mland-discovery-server:
+    image: mland-discovery-server
+    container_name: mland-discovery-server
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    depends_on:
+      - mland-config-server
+
+
+  mland-api-gateway:
+    image: mland-api-gateway
+    container_name: mland-api-gateway
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mland-config-server
+      - mland-discovery-server
+
+
+  mland-oauth2-server:
+    image: mland-oauth2-server
+    container_name: mland-oauth2-server
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mland-api-gateway
+
+
+  mland-mail-sender:
+    image: mland-mail-sender
+    container_name: mland-mail-sender
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    depends_on:
+      - mland-api-gateway
+
+
+  mland-currency-service:
+    image: mland-currency-service
+    container_name: mland-currency-service
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    depends_on:
+      - mland-api-gateway
+
+
+  mland-resource-server:
+    image: mland-resource-server
+    container_name: mland-resource-server
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    depends_on:
+      - mland-api-gateway

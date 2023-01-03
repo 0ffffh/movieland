@@ -28,7 +28,7 @@ public class AbstractBaseITest {
 
     static {
         POSTGRES_SQL_CONTAINER =
-                new PostgreSQLContainer<>("postgres:14.4")
+                new PostgreSQLContainer<>("postgres")
                         .withDatabaseName("test")
                         .withUsername("test")
                         .withPassword("test");

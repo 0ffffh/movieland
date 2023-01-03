@@ -1,20 +1,22 @@
-#server:
-#  port: ${PORT:8888}
-#
-#spring:
-#  application:
-#    name: mland-config-server
-#  profiles:
-#    active: ${CONFIG_SERVER_PROFILE:native}
-#
-#  cloud:
-#    config:
-#      server:
-#        git:
-#          clone-on-start: true
-#          basedir: ${CONFIG_BASE_DIR:git_config}
-#          username: ${GIT_USER}
-#          password: ${GIT_TOKEN}
-#          default-label: main
-#          uri: ${GIT_URI}
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka@mland-discovery-server:8761/eureka
+
+#      defaultZone: http://eureka:eureka@localhost:8761/eureka
+
+spring:
+  application:
+    name: mland-config-server
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: true
+          basedir: git_config
+          default-label: main
+          uri: https://github.com/0ffffh/mland_config.git
 

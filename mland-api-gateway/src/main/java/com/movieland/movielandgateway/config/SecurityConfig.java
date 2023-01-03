@@ -22,7 +22,8 @@ public class SecurityConfig {
                         .anyExchange().authenticated())
                 .oauth2Login()
                 .and()
-                .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt);
+                .oauth2ResourceServer()
+                .jwt();
         return http.build();
     }
 }

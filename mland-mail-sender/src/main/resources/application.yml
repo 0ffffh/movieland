@@ -1,5 +1,5 @@
 spring:
   application:
-    name: mland-oauth2-server
+    name: mland-mail-sender
   config:
     import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
