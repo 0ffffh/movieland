@@ -9,7 +9,7 @@ mvnw
 mvnw.cmd
 logs
 git_config
-
+docker-compose-dev.yml
 application-dev.yml
 ### STS ###
 .apt_generated

@@ -55,39 +55,28 @@ services:
 
 
   mland-config-server:
-    image: mland-config-server
+    image: 0ffffh/mland-config-server:latest
     container_name: mland-config-server
     depends_on:
       - postgresdb
       - broker
       - zipkin
+    restart: always
 
 
   mland-discovery-server:
-    image: mland-discovery-server
+    image: 0ffffh/mland-discovery-server:latest
     container_name: mland-discovery-server
     environment:
       CONFIG_SERVER_URL: http://mland-config-server:8888
       JAVA_OPTS: -Dspring.profiles.active=docker
     depends_on:
       - mland-config-server
-
-
-  mland-api-gateway:
-    image: mland-api-gateway
-    container_name: mland-api-gateway
-    environment:
-      CONFIG_SERVER_URL: http://mland-config-server:8888
-      JAVA_OPTS: -Dspring.profiles.active=docker
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mland-config-server
-      - mland-discovery-server
+    restart: always
 
 
   mland-oauth2-server:
-    image: mland-oauth2-server
+    image: 0ffffh/mland-oauth2-server:latest
     container_name: mland-oauth2-server
     environment:
       CONFIG_SERVER_URL: http://mland-config-server:8888
@@ -95,34 +84,52 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - mland-api-gateway
+      - mland-config-server
+      - mland-discovery-server
+    restart: always
+
+
+  mland-api-gateway:
+    image: 0ffffh/mland-api-gateway:latest
+    container_name: mland-api-gateway
+    environment:
+      CONFIG_SERVER_URL: http://mland-config-server:8888
+      JAVA_OPTS: -Dspring.profiles.active=docker
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mland-oauth2-server
+    restart: always
 
 
   mland-mail-sender:
-    image: mland-mail-sender
+    image: 0ffffh/mland-mail-sender:latest
     container_name: mland-mail-sender
     environment:
       CONFIG_SERVER_URL: http://mland-config-server:8888
       JAVA_OPTS: -Dspring.profiles.active=docker
     depends_on:
       - mland-api-gateway
+    restart: always
 
 
   mland-currency-service:
-    image: mland-currency-service
+    image: 0ffffh/mland-currency-service:latest
     container_name: mland-currency-service
     environment:
       CONFIG_SERVER_URL: http://mland-config-server:8888
       JAVA_OPTS: -Dspring.profiles.active=docker
     depends_on:
       - mland-api-gateway
+    restart: always
 
 
   mland-resource-server:
-    image: mland-resource-server
+    image: 0ffffh/mland-resource-server:latest
     container_name: mland-resource-server
     environment:
       CONFIG_SERVER_URL: http://mland-config-server:8888
       JAVA_OPTS: -Dspring.profiles.active=docker
     depends_on:
       - mland-api-gateway
+    restart: always
