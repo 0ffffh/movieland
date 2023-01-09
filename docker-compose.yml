@@ -133,3 +133,36 @@ services:
     depends_on:
       - mland-api-gateway
     restart: always
+
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - mland-config-server
+      - mland-discovery-server
+      - mland-api-gateway
+      - mland-oauth2-server
+      - mland-mail-sender
+      - mland-currency-service
+      - mland-resource-server
+
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
