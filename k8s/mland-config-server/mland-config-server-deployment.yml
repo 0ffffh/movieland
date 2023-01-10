@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mland-config-server
+  name: mland-config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mland-config-server
+  template:
+    metadata:
+      labels:
+        app: mland-config-server
+    spec:
+      containers:
+        - name: mland-config-server
+          image: 0ffffh/mland-config-server:latest
+          ports:
+            - containerPort: 8888
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mland-config-server
+  name: mland-config-server
+spec:
+  ports:
+      - port: 8888
+        targetPort: 8888
+  selector:
+    app: mland-config-server
+
+

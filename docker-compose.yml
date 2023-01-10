@@ -25,14 +25,14 @@ services:
       - postgresdb
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.0
+    image: confluentinc/cp-zookeeper
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-kafka:7.3.0
+    image: confluentinc/cp-kafka
     container_name: broker
     ports:
       - "9092:9092"
@@ -151,7 +151,6 @@ services:
       - mland-mail-sender
       - mland-currency-service
       - mland-resource-server
-
 
   grafana:
     image: grafana/grafana-oss

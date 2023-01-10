@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mland-resource-server
+  name: mland-resource-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mland-resource-server
+  template:
+    metadata:
+      labels:
+        app: mland-resource-server
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_SERVER_URL
+              value: http://mland-resource-server:8888
+            - name: JAVA_OPTS
+              value: -Dspring.profiles.active=docker -Dserver.port=8080
+          image: 0ffffh/mland-resource-server:latest
+          name: mland-resource-server
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mland-resource-server
+  name: mland-resource-server
+spec:
+  ports:
+      - port: 8080
+        targetPort: 8080
+  selector:
+    app: mland-resource-server
+
+

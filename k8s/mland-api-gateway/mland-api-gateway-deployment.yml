@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mland-api-gateway
+  name: mland-api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mland-api-gateway
+  template:
+    metadata:
+      labels:
+        app: mland-api-gateway
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_SERVER_URL
+              value: http://mland-config-server:8888
+            - name: JAVA_OPTS
+              value: -Dspring.profiles.active=docker
+          image: 0ffffh/mland-api-gateway:latest
+          name: mland-api-gateway
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mland-api-gateway
+  name: mland-api-gateway
+spec:
+  type: LoadBalancer
+  ports:
+      - port: 8080
+        targetPort: 8080
+  selector:
+    app: mland-api-gateway
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mland-api-gateway
+spec:
+  rules:
+    - host: "movieland"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: mland-api-gateway
+                port:
+                  number: 8080
+
+

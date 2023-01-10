@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mland-discovery-server
+  name: mland-discovery-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mland-discovery-server
+  template:
+    metadata:
+      labels:
+        app: mland-discovery-server
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_SERVER_URL
+              value: http://mland-config-server:8888
+            - name: JAVA_OPTS
+              value: -Dspring.profiles.active=docker
+          image: 0ffffh/mland-discovery-server:latest
+          name: mland-discovery-server
+          ports:
+            - containerPort: 8761
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mland-discovery-server
+  name: mland-discovery-server
+spec:
+  ports:
+      - port: 8761
+        targetPort: 8761
+  selector:
+    app: mland-discovery-server
+
+

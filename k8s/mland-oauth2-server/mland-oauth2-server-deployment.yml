@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mland-oauth2-server
+  name: mland-oauth2-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mland-oauth2-server
+  template:
+    metadata:
+      labels:
+        app: mland-oauth2-server
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_SERVER_URL
+              value: http://mland-config-server:8888
+            - name: JAVA_OPTS
+              value: -Dspring.profiles.active=docker
+          image: 0ffffh/mland-oauth2-server:latest
+          name: mland-oauth2-server
+          ports:
+            - containerPort: 9000
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mland-oauth2-server
+  name: mland-oauth2-server
+spec:
+  type: LoadBalancer
+  ports:
+      - port: 9000
+        targetPort: 9000
+  selector:
+    app: mland-oauth2-server
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mland-oauth2-server
+spec:
+  rules:
+    - host: "mland-oauth2-server"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: mland-oauth2-server
+                port:
+                  number: 9000
+
+

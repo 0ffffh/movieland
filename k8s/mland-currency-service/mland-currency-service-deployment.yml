@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mland-currency-service
+  name: mland-currency-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mland-currency-service
+  template:
+    metadata:
+      labels:
+        app: mland-currency-service
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_SERVER_URL
+              value: http://mland-currency-service:8888
+            - name: JAVA_OPTS
+              value: -Dspring.profiles.active=docker -Dserver.port=8080
+          image: 0ffffh/mland-currency-service:latest
+          name: mland-currency-service
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mland-currency-service
+  name: mland-currency-service
+spec:
+  ports:
+      - port: 8080
+        targetPort: 8080
+  selector:
+    app: mland-currency-service
+
+
